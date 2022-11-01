@@ -12,6 +12,18 @@ calen.sh    cal & calendar usage
             need '~/.calendar/calendar' file
             up to you to figure out that mess
 calen.awk   display output
+julian.sh   various julian dates from julian-*.dat -> julian.dat
+            fields separated with '|'
+               1 DATE
+               2 OFFSET which overrides DATE
+               3 DESCRIPTION
+               4 EMOJI if your system supports it
+            have as many julian-*.dat you want
+            ~/data/julian-future.dat
+            ~/data/julian-happy.dat
+            ~/data/julian-shit.dat
+            ~/data/julian-systems.dat     sample file
+            ~/data/julian.dat             built from separate files
 
 - - - - -
 
@@ -60,3 +72,7 @@ I wonder... are these glitches deliberate...?
 I would not put it past BIG Companies to do something like this
    or a GOVERNMENT...
 THEY do not like Free and Open Source Software (FOSS)
+
+WARNING!!!
+have a data directory in home for *.dat files
+$HOME/data
