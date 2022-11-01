@@ -2,9 +2,6 @@
 #------------------------------------------------------------------------------#
 #                            Programmed By Liz                                 #
 #------------------------------------------------------------------------------#
-# 2022-10-24
-# updated for 'calendar' error
-#
 # calendar stuff - 6 month calendar, events, & food pantry
 #
 # even though 'cal' turns off hilite for non-tty some code is still there
@@ -14,6 +11,12 @@
 # there is a glitch in 'calendar'
 # -B includes the day after today as well
 # so the date must be forced 2 days prior
+#
+# 2022-10-24
+# updated for 'calendar' error
+#
+# 2022-11-01
+# used head to limit julian display
 #
 ofs=2                                                    # error offset
 pre=9                                                    # pre event days
@@ -36,4 +39,5 @@ calendar -t $bfr -w -B $((9-ofs)) | calen.awk -v t=1     # calendar mode
 echo -ne "$non"
 # ---------------------------------------------------------------- today & after
 calendar -w -l 30 | calen.awk -v t=1                     # calendar mode
-# pantry.sh | calen.awk -v t=2                           # other mode 2
+pantry.sh | calen.awk -v t=2                             # other mode 2
+julian.sh -f future | head -n 13
