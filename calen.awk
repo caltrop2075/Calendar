@@ -3,6 +3,10 @@
 #                            Programmed By Liz                                 #
 #------------------------------------------------------------------------------#
 # hilite calen stuff
+#
+# 2022-11-01
+# updated for hilite glitch, added spaces around match variables
+#
 # ==============================================================================
 BEGIN {
    Wht="\033[0;37m"
@@ -28,7 +32,7 @@ BEGIN {
                      a=substr($0,1,22)          # pull apart month cols
                      b=substr($0,23,22)
                      c=substr($0,45)
-                     if(match(b,d))             # search second month col for day
+                     if(match(" "b" "," "d" ")) # search second month col for day
                         sub(d,rev d non,b)      # hilite day
                      printf("%s%s%s\n",a,b,c)   # combine month cols
                   }
