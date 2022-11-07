@@ -37,6 +37,8 @@ tz=$((${TZ#GMT}))                               # get tz str -> #
 msg=$(printf "%5s: %s\n" "now" "$(date +"%F %T %a")")
 fil="$HOME/data/julian.dat"
 o=0
+Wht="\033[0;37m"
+non="\033[0m"
 #-------------------------------------------------------- build sorted base file
 find ~/data -name "julian-*.dat" |              # find data files
 {
@@ -50,7 +52,8 @@ find ~/data -name "julian-*.dat" |              # find data files
    done
    if (( $flg ))                                # rebuild ?
    then
-      echo "$flg file(s) changed, rebuilding ~/data/julian.dat"
+      # output to STDERR so other prgms can handle STDOUT properly
+      echo -en "$Wht$flg file(s) changed, rebuilding ~/data/julian.dat$non\r" >&2 # > /dev/stderr
       cat ~/data/julian-* |
       while read lin
       do
