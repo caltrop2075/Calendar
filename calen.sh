@@ -40,4 +40,4 @@ echo -ne "$non"
 # ---------------------------------------------------------------- today & after
 calendar -w -l 30 | calen.awk -v t=1                     # calendar mode
 pantry.sh | calen.awk -v t=2                             # other mode 2
-julian.sh -f future | head -n 13
+julian.sh -f future | head -n 14
