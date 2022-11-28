@@ -27,10 +27,10 @@ BEGIN {
             switch(t)                           # >>> non-select record handling
             {
                case 0 :                         # >>> cal mode
-                  if(NR>2 && NR<9)
+                  if(NR>2 && NR<9)              # first month row
                   {
                      a=substr($0,1,22)          # pull apart month cols
-                     b=substr($0,23,22)
+                     b=substr($0,23,22)         # second month column
                      c=substr($0,45)
                      if(match(" "b" "," "d" ")) # search second month col for day
                         sub(d,rev d non,b)      # hilite day

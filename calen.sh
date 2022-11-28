@@ -29,7 +29,9 @@ unset LC_ALL
 clear
 title-80.sh -t line "Calendar & Events For The Next 30 Days & pre $pre"
 
-cal -B 1 -A 4 | cal.sed | calen.awk -v d="$day" -v t=0   # cal mode
+# cal -B 1 -A 4 | cal.sed | calen.awk -v d="$day" -v t=0   # cal mode
+cal -3 | cal.sed | calen.awk -v d="$day" -v t=0          # cal mode
+echo
 
 # ----------------------------------------------------------------------- before
 bfr=$(date -d @$(($(date +"%s")-(ofs*24*60*60))) +"%F")  # before n days
@@ -39,5 +41,8 @@ calendar -t $bfr -w -B $((9-ofs)) | calen.awk -v t=1     # calendar mode
 echo -ne "$non"
 # ---------------------------------------------------------------- today & after
 calendar -w -l 30 | calen.awk -v t=1                     # calendar mode
-pantry.sh | calen.awk -v t=2                             # other mode 2
-julian.sh -f future | head -n 14
+# ------------------------------------------------------------------------ other
+# pantry.sh | calen.awk -v t=2                             # pantyr crazy dates
+# julian.sh -f future | head -n 14                         # julian future
+echo
+food.sh | head -n 7                                      # new julian category
