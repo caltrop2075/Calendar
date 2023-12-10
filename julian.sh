@@ -25,46 +25,40 @@
 # emoji output in the terminal is squirrely
 # like reading a data file that has '\r' in it
 #
+# 2023-02-12 BUG FOUND time error with -f option & date input
+# 2023-02-16 changed new file detect
+#
 #--------------------------------------------------------------------- variables
-unset LC_ALL                                    # so float comma will work
-w0=0                                            # extra numeric spaces
-w1=$((41-3*w0))                                 # first column
-w2=$((17+w0))
-w3=$((9+w0))
-w4=$((12+w0))
-y="365.242198781"                               # day in year from HP48SX/GX/G
-tz=$((${TZ#GMT}))                               # get tz str -> #
+unset LC_ALL                                 # so float comma will work
+w0=1                                         # numeric spaces
+w1=$((44-3*w0))                              # first column
+w2=$((16+w0))
+w3=$((8+w0))
+w4=$((11+w0))
+pd="․"                                       # first col pad
+y="365.242198781"                            # day in year from HP48SX/GX/G
+tz=$((${TZ#GMT}))                            # get tz str -> #        DST ???
 msg=$(printf "%5s: %s\n" "now" "$(date +"%F %T %a")")
 fil="$HOME/data/julian.dat"
 o=0
 Wht="\033[0;37m"
-non="\033[0m"
+nrm="\033[0m"
 #-------------------------------------------------------- build sorted base file
-find ~/data -name "julian-*.dat" |              # find data files
-{
-   flg=0
-   while read lin                               # scan data files
+num=$(find ~/data -type f -name "julian-*.dat" -newer "$fil" | wc -l) # new file
+if (( num > 0 ))                             # rebuild ?
+then
+   # output to STDERR so other prgms can handle STDOUT properly
+   echo -en "$Wht$num file(s) changed, rebuilding ~/data/julian.dat$nrm\r" >&2 # > /dev/stderr
+   cat ~/data/julian-* |
+   while read lin
    do
-      if [ ~/data/julian.dat -ot $lin ]         # set rebuild flag
+      if [[ -n $lin && ${lin:0:1} != "#" ]]  # skip comments & blank lines
       then
-         ((flg++))
+         echo "$lin"
       fi
-   done
-   if (( $flg ))                                # rebuild ?
-   then
-      # output to STDERR so other prgms can handle STDOUT properly
-      echo -en "$Wht$flg file(s) changed, rebuilding ~/data/julian.dat$non\r" >&2 # > /dev/stderr
-      cat ~/data/julian-* |
-      while read lin
-      do
-         if [[ -n $lin && ${lin:0:1} != "#" ]]  # skip comments & blank lines
-         then
-            echo "$lin"
-         fi
-      done | sort > "$fil"
-      sleep 3
-   fi
-}
+   done | sort > "$fil"
+   sleep 3
+fi
 #------------------------------------------------------------------ command line
 if [[ -n $1 ]]
 then
@@ -92,8 +86,8 @@ then
             echo "ERROR: need file category"
             find ~/data -type f -name "julian-*" -printf "%f\n" | sort |
             {
-               m=4                              # cols
-               c=0                              # counter
+               m=5                           # cols
+               c=0                           # counter
                while read lin
                do
                   ((c++))
@@ -118,12 +112,12 @@ then
          o=1
          ;;
       * )
-         if (( ${#1} < 10 ))                    # date string ?
+         if (( ${#1} < 10 ))                 # date string ?
          then
             echo "unknown command"
             exit 1
          else
-            d=$(date +"%F %T %a" -d "$1")       # check valid date
+            d=$(date +"%F %T %a" -d "$1")    # check valid date
             e=$?
             if (( $e ))
             then
@@ -158,14 +152,14 @@ do
       if [[ -z $ofs ]]
       then                                   # if no ofs use dte
          ofs=$(date -d "$dte" +"%s")
-         ofs=$(((ofs/60/60-tz)/24))        # tz adjust
+         ofs=$(((ofs/60/60-tz)/24))          # tz adjust
       else                                   # if ofs calc date
          tmp=$(echo "scale=20;($ofs*24+$tz)*60*60" | bc)
          tmp=${tmp%.*}                       # remove trailing decimal
          dte=$(date -d "@$tmp" +"%F")
       fi
 
-      if [[ -z $1 ]]                         # if cmd lin input
+      if (( ${#1} < 10 ))                    # date string ?
       then
          sec=$(date +"%s")                   # curr date
       else
@@ -188,7 +182,8 @@ do
             printf "%-"$w1"s%"$w2".6f%"$w3".2f%"$w4"s\n" "$msg" "$jul" "$yr" "$dte"
          fi
       else                                   # emoji
-         msg=${msg:0:$((w1-3))}              # truncate message
+         msg=${msg:0:$((w1-3))}              # truncate message, shell method
+         # msg=$(printf "%.$((w1-3))s" "$msg") # printf method
          case $emo in                        # emoji needing extra spc
             ☀️|☠️|☢️|☣️|☣️|⚠️|❄️|🍽️ )       # add extra emoji space
                emo=$emo" " ;;
@@ -196,7 +191,7 @@ do
          emo=$emo" "                         # emoji space
          for ((j=${#msg};j<$((w1-2));j++))   # easy eye dot
          do
-            msg=$msg"‧"
+            msg="$msg$pd"
          done
          if (( $o ))
          then
