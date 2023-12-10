@@ -1,7 +1,6 @@
 # Calendar
 calendar utilities
 
-
 Calendar Utilities
 
 cal.sh      9 month calendar with current month in middle
@@ -12,6 +11,9 @@ calen.sh    cal & calendar usage
             need '~/.calendar/calendar' file
             up to you to figure out that mess
 calen.awk   display output
+dow.sh      yyyy dd dow n -> date
+food.sh     food bank days using julian-food.dat
+food2.sh    food bank days calculated starting with current month
 julian.sh   various julian dates from julian-*.dat -> julian.dat
             fields separated with '|'
                1 DATE
@@ -24,6 +26,43 @@ julian.sh   various julian dates from julian-*.dat -> julian.dat
             ~/data/julian-shit.dat
             ~/data/julian-systems.dat     sample file
             ~/data/julian.dat             built from separate files
+mcal.sh     3 calendars starting on Monday
+mcal.awk    reformats cals, can be used stand alone
+shows.sh    list of shows with calendar, -n no calendar
+shows.sed   strips control codes from calendar
+shows.awk   formats the output
+tz.sh       genrates a time zone list sorted by time
+            with an argument egreps that sorted list, tz.sh  "US/"
+
+- - - - -
+
+two different calendar formats
+
+1,24                    25,21                46
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+      July 2023              August 2023            September 2023
+ Mo Tu We Th Fr Sa Su    Mo Tu We Th Fr Sa Su    Mo Tu We Th Fr Sa Su
+                 1  2        1  2  3  4  5  6                 1  2  3
+  3  4  5  6  7  8  9     7  8  9 10 11 12 13     4  5  6  7  8  9 10
+ 10 11 12 13 14 15 16    14 15 16 17 18 19 20    11 12 13 14 15 16 17
+ 17 18 19 20 21 22 23    21 22 23 24 25 26 27    18 19 20 21 22 23 24
+ 24 25 26 27 28 29 30    28 29 30 31             25 26 27 28 29 30
+ 31
+
+1,29                         30,21                51
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+ +----------------------+   +----------------------+   +----------------------+
+ |      July 2023       |   |     August 2023      |   |    September 2023    |
+ | Mo Tu We Th Fr Sa Su |   | Mo Tu We Th Fr Sa Su |   | Mo Tu We Th Fr Sa Su |
+ |                 1  2 |   |     1  2  3  4  5  6 |   |              1  2  3 |
+ |  3  4  5  6  7  8  9 |   |  7  8  9 10 11 12 13 |   |  4  5  6  7  8  9 10 |
+ | 10 11 12 13 14 15 16 |   | 14 15 16 17 18 19 20 |   | 11 12 13 14 15 16 17 |
+ | 17 18 19 20 21 22 23 |   | 21 22 23 24 25 26 27 |   | 18 19 20 21 22 23 24 |
+ | 24 25 26 27 28 29 30 |   | 28 29 30 31          |   | 25 26 27 28 29 30    |
+ | 31                   |   |                      |   |                      |
+ +----------------------+   +----------------------+   +----------------------+
 
 - - - - -
 
